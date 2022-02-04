@@ -1,3 +1,4 @@
+from sqlalchemy.exc import IntegrityError
 from extentions import db
 from settings.config import CSMONEY
 from models.dota import DotaItem, Hero, ServicePrice, Slot, ItemType, Quality, Rarity
@@ -37,7 +38,10 @@ class DotaDataProcessor:
             ))
         else:
             price.price = data.get("defaultPrice")
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
 
     @classmethod
     def _validate(cls, data: dict):
