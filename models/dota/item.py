@@ -1,5 +1,6 @@
 from extentions import db
 from models.dota.specification import ItemType, Slot, Quality, Rarity
+from models.dota.service_price import ServicePrice
 
 
 class DotaItem(db.Model):
@@ -12,4 +13,16 @@ class DotaItem(db.Model):
     item_type = db.Column(db.Enum(ItemType), nullable=False)
     slot = db.Column(db.Enum(Slot), nullable=False)
     hero_id = db.Column(db.Integer, db.ForeignKey('dota_hero.id'), nullable=True)
-    prices = db.relationship("ServicePrice", back_populates="item", lazy="dynamic")
+    prices = db.relationship("ServicePrice", back_populates="item", lazy='select')
+
+    @property
+    def as_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "quality": self.quality.value,
+            "rarity": self.rarity.value,
+            "item_type": self.item_type.value,
+            "slot": self.slot.value,
+            "prices": [service_price.as_dict for service_price in self.prices]
+        }

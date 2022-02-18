@@ -16,3 +16,12 @@ class ServicePrice(db.Model):
     price = db.Column(db.Numeric(precision=6, scale=2), nullable=False)
     updated_at = db.Column(db.DateTime, default=datetime.datetime.utcnow, server_default=func.now(),
                            onupdate=func.current_timestamp())
+
+    @property
+    def as_dict(self):
+        return {
+            "id": self.id,
+            "service": self.service,
+            "price": self.price,
+            "updated_at": self.updated_at.strftime("%d.%m.%Y %H:%M")
+        }
