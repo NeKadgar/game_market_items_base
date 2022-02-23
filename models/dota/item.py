@@ -24,5 +24,6 @@ class DotaItem(db.Model):
             "rarity": self.rarity.value,
             "item_type": self.item_type.value,
             "slot": self.slot.value,
+            "hero": self.hero.name if self.hero else None,
             "prices": [service_price.as_dict for service_price in self.prices]
         }

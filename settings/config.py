@@ -18,3 +18,10 @@ CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", "redis://localho
 
 # Services
 CSMONEY = "CSMONEY"  # noqa
+STEAM = "STEAM"
+LOOTFARM = "LOOT.FARM"  # noqa
+SERVICES = (
+    CSMONEY,
+    STEAM,
+    LOOTFARM
+)
