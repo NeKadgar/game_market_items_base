@@ -1,14 +1,14 @@
 version: '3.3'
 
 services:
-  db:
-    image: postgres:13.3
-    environment:
-      POSTGRES_DB: "db"
-      POSTGRES_USER: "user"
-      POSTGRES_PASSWORD: "pass"
-    ports:
-      - "5433:5432"
+#  db:
+#    image: postgres:13.3
+#    environment:
+#      POSTGRES_DB: "db"
+#      POSTGRES_USER: "user"
+#      POSTGRES_PASSWORD: "pass"
+#    ports:
+#      - "5433:5432"
 
   server:
     build: .
@@ -28,7 +28,7 @@ services:
     command: bash -c "
       ./wait_for_it.sh db:5432 --
       flask db upgrade &&
-      celery -A background.celery_app.app worker"
+      celery -A background.celery_app.app worker -n base -P solo"
     env_file:
       - .env
     depends_on:
@@ -39,6 +39,8 @@ services:
     command: bash -c "
       ./wait_for_it.sh db:5432 --
       celery -A background.celery_app.app flower --port=5555"
+    env_file:
+      - .env
     depends_on:
       - worker
     ports:
