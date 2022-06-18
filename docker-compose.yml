@@ -12,7 +12,7 @@ services:
 
   server:
     build: .
-    command: bash -c "./wait_for_it.sh db:5432 --
+    command: bash -c "
       flask db upgrade && 
       gunicorn main:app -b 0.0.0.0:80"
     env_file:
