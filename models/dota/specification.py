@@ -53,6 +53,8 @@ class Slot(enum.Enum):
     VOICE = "Voice"
     WARD = "Ward"
     WEAPON = "Weapon"
+    WEATHER = "Weather"
+    NONE = None
 
 
 class Quality(enum.Enum):
@@ -66,6 +68,7 @@ class Quality(enum.Enum):
     UNUSUAL = "Unusual"
     ELDER = "Elder"
     FROZEN = "Frozen"
+    HEROIC = "Heroic"
 
 
 class Rarity(enum.Enum):

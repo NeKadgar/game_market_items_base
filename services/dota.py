@@ -9,7 +9,16 @@ from models.dota.item import DotaItem
 
 class DotaService:
     @classmethod
-    def update_service_price(cls, item_hash_name: str, price: Decimal, service: str):
+    def update_service_price(
+            cls,
+            item_hash_name: str,
+            price: Decimal,
+            service: str,
+            hero_name: str = None,
+            rarity: str = None,
+            item_type: str = None,
+            slot: str = None,
+    ):
         if service in SERVICES:
             if service == STEAM:
                 price = round(price / 80, 2)

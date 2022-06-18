@@ -1,0 +1,45 @@
+version: '3.3'
+
+services:
+  db:
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "db"
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "pass"
+    ports:
+      - "5433:5432"
+
+  server:
+    build: .
+    command: bash -c "./wait_for_it.sh db:5432 --
+      flask db upgrade && 
+      gunicorn main:app -b 0.0.0.0:80"
+    env_file:
+      - .env
+
+    depends_on:
+      - db
+    ports:
+      - "81:80"
+  worker:
+    build: .
+    restart: always
+    command: bash -c "
+      ./wait_for_it.sh db:5432 --
+      flask db upgrade &&
+      celery -A background.celery_app.app worker"
+    env_file:
+      - .env
+    depends_on:
+      - db
+  dashboard:
+    build: .
+    restart: always
+    command: bash -c "
+      ./wait_for_it.sh db:5432 --
+      celery -A background.celery_app.app flower --port=5555"
+    depends_on:
+      - worker
+    ports:
+      - "5556:5555"

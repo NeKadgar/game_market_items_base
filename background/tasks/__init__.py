@@ -1,1 +1,1 @@
-from .item_base import update_items_base
+from .item_base import update_service_price
