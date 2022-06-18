@@ -7,7 +7,7 @@ DEBUG = os.environ.get("DEBUG", True)
 TESTING = os.environ.get("DEBUG", True)
 
 # Database settings
-SQLALCHEMY_DATABASE_URI = "postgresql://user:pass@localhost:5433/db" or \
+SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL') or \
                           "sqlite:///" + os.path.join(BASE_DIR, "app.db")
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 MIGRATION_DIR = os.environ.get('MIGRATION_DIR', os.path.join(BASE_DIR, "models", "migrations"))
