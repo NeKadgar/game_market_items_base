@@ -17,11 +17,8 @@ services:
       gunicorn main:app -b 0.0.0.0:80"
     env_file:
       - .env
-
-    depends_on:
-      - db
     ports:
-      - "81:80"
+      - "80:80"
   worker:
     build: .
     restart: always
@@ -31,8 +28,6 @@ services:
       celery -A background.celery_app.app worker -n base -P solo"
     env_file:
       - .env
-    depends_on:
-      - db
   dashboard:
     build: .
     restart: always
@@ -44,4 +39,4 @@ services:
     depends_on:
       - worker
     ports:
-      - "5556:5555"
+      - "5555:5555"
