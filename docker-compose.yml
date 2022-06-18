@@ -23,7 +23,6 @@ services:
     build: .
     restart: always
     command: bash -c "
-      ./wait_for_it.sh db:5432 --
       flask db upgrade &&
       celery -A background.celery_app.app worker -n base -P solo"
     env_file:
@@ -32,7 +31,6 @@ services:
     build: .
     restart: always
     command: bash -c "
-      ./wait_for_it.sh db:5432 --
       celery -A background.celery_app.app flower --port=5555"
     env_file:
       - .env
